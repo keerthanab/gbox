@@ -17,6 +17,7 @@
 package com.example.gbox;
 
 import java.util.Arrays;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,11 +25,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.facebook.LoggingBehavior;
 import com.facebook.Session;
+import com.facebook.Session.OpenRequest;
+import com.facebook.Session.StatusCallback;
 import com.facebook.SessionState;
 import com.facebook.Settings;
 import com.facebook.widget.LoginButton;
@@ -44,7 +46,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         buttonLoginLogout = (LoginButton)findViewById(R.id.authButton);
-        buttonLoginLogout.setReadPermissions(Arrays.asList("user_likes", "friends_likes"));
+        //buttonLoginLogout.setReadPermissions(Arrays.asList("friends_activities", "friends_likes", "user_likes", "friends_interests"));
         textInstructionsOrLink = (TextView)findViewById(R.id.instructionsOrLink);
         
 
@@ -118,8 +120,19 @@ public class MainActivity extends Activity {
         if (!session.isOpened() && !session.isClosed()) {
             session.openForRead(new Session.OpenRequest(this).setCallback(statusCallback));
         } else {
-            Session.openActiveSession(this, true, statusCallback);
+            openActiveSession(this, true, statusCallback, Arrays.asList("friends_activities", "friends_likes", "user_likes", "friends_interests"));
         }
+    }
+    
+    private static Session openActiveSession(Activity activity, boolean allowLoginUI, StatusCallback callback, List<String> permissions) {
+        OpenRequest openRequest = new OpenRequest(activity).setPermissions(permissions).setCallback(callback);
+        Session session = new Session.Builder(activity).build();
+        if (SessionState.CREATED_TOKEN_LOADED.equals(session.getState()) || allowLoginUI) {
+            Session.setActiveSession(session);
+            session.openForRead(openRequest);
+            return session;
+        }
+        return null;
     }
 
     private void onClickLogout() {

@@ -1,24 +1,11 @@
 package com.example.gbox;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,28 +20,32 @@ public class FriendsActivity extends Activity {
 
 	private LoginButton buttonLogout;
 
+	public enum Data {
+		movies, music, likes, interests, books, television, activities
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_friends);
 		buttonLogout = (LoginButton) findViewById(R.id.authButton);
-		buttonLogout.setText(R.string.logout);
-		buttonLogout.setOnClickListener(new OnClickListener() {
-			public void onClick(View view) {
-				onClickLogout();
-			}
-		});
 		Session session = Session.getActiveSession();
+		if (session.isOpened()) {
+			buttonLogout.setOnClickListener(new OnClickListener() {
+				public void onClick(View view) {
+					onClickLogout();
+				}
+			});
+		}
 		if (session.isOpened()) {
 			Log.i("FriendsActivity",
 					URL_PREFIX_FRIENDS + session.getAccessToken());
 			try {
 				getFriends();
+				getFriendsData(Data.movies, "605512675");//pass in a friend's id
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				Log.i("FriendsActivity", e.getMessage());
 			}
-			// new JSONTask().execute();
 		}
 
 	}
@@ -71,28 +62,71 @@ public class FriendsActivity extends Activity {
 					JSONArray friendsArray = (JSONArray) friends.get("data");
 					for (int i = 0; i < friendsArray.length(); i++) {
 						try {
-							Log.i("FriendsActivity", friendsArray.getJSONObject(i)
-									.toString());
-							//TODO: INSERT CODE HERE
+							Log.i("FriendsActivity", friendsArray
+									.getJSONObject(i).toString());
+							// TODO: INSERT CODE HERE
 						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							Log.i("FriendsActivity",e.getMessage());
+							Log.i("FriendsActivity", e.getMessage());
 						}
 					}
 
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					Log.i("FriendsActivity",e.getMessage());
+					Log.i("FriendsActivity", e.getMessage());
 				}
 
 			}
 		});
 	}
 
+	public void getFriendsData(Data d, String friendId) throws JSONException {
+		String str = Session.getActiveSession().getAccessToken();
+		JsonHttpResponseHandler handler = null;
+		if (d == Data.movies) {
+			str = friendId + "/movies?access_token=" + str;
+		} else if (d == Data.activities) {
+			str = friendId + "/activities?access_token=" + str;
+		} else if (d == Data.books) {
+			str = friendId + "/books?access_token=" + str;
+		} else if (d == Data.interests) {
+			str = friendId + "/interests?access_token=" + str;
+		} else if (d == Data.likes) {
+			str = friendId + "/likes?access_token=" + str;
+		} else if (d == Data.music) {
+			str = friendId + "/music?access_token=" + str;
+		} else if (d == Data.television) {
+			str = friendId + "/television?access_token=" + str;
+		}
+		Log.i("FriendsActivity", str);
+		handler = new JsonHttpResponseHandler() {
+			@Override
+			public void onSuccess(JSONObject activities) {
+				Log.i("FriendsActivity", "json returned");
+				try {
+					JSONArray friendsArray = (JSONArray) activities.get("data");
+					for (int i = 0; i < friendsArray.length(); i++) {
+						try {
+							Log.i("FriendsActivity", friendsArray
+									.getJSONObject(i).toString());
+							// TODO: INSERT CODE HERE
+						} catch (JSONException e) {
+							Log.i("FriendsActivity", e.getMessage());
+						}
+					}
+				} catch (JSONException e) {
+					Log.i("FriendsActivity", e.getMessage());
+				}
+
+			}
+		};
+		HTTPClient.get(str, null, handler);
+	}
+
 	public void onClickLogout() {
 		Session session = Session.getActiveSession();
 		if (!session.isClosed()) {
 			session.closeAndClearTokenInformation();
+			startActivity(new Intent(this, MainActivity.class));
+			finish();
 		}
 	}
 
