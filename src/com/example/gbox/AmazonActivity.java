@@ -70,6 +70,17 @@ public class AmazonActivity extends Activity {
 						}
 					}
 					
+					AllInterestCollection allLikes = new AllInterestCollection();
+					int size = names.length;
+					for(int i=0; i<size; i++)
+						allLikes.addInterest(new InterestItem(names[i],categories[i],""));
+						
+					allLikes.finalizeSearch();
+					String[] query = allLikes.getSuggestions();
+					for (int i = 0; i< query.length; i++) {
+						Log.i("AmazonActivity",query[i]);
+					}
+					
 				} catch (JSONException e) {
 					Log.i("FriendsActivity", e.getMessage());
 				}
