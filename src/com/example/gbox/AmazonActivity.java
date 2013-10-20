@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 public class AmazonActivity extends Activity {
+	String[] names = null;
+	String[] categories = null; 
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -21,7 +23,7 @@ public class AmazonActivity extends Activity {
 		String friendID = getIntent().getStringExtra("friendID");
 		Log.i("AmazonActivity", friendID);
 		try {
-			getFriendsData(Data.movies, friendID);
+			getFriendsData(Data.likes, friendID);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,15 +55,21 @@ public class AmazonActivity extends Activity {
 				Log.i("FriendsActivity", "json returned");
 				try {
 					JSONArray friendsArray = (JSONArray) activities.get("data");
+					names = new String[friendsArray.length()];
+					categories = new String[friendsArray.length()];
 					for (int i = 0; i < friendsArray.length(); i++) {
 						try {
-							Log.i("FriendsActivity", friendsArray
-									.getJSONObject(i).toString());
+							names[i] = friendsArray
+									.getJSONObject(i).getString("name");
+							categories[i] = friendsArray
+									.getJSONObject(i).getString("category");
 							// TODO: INSERT CODE HERE
+							
 						} catch (JSONException e) {
-							Log.i("FriendsActivity", e.getMessage());
+							Log.i("AmazonActivity", e.getMessage());
 						}
 					}
+					
 				} catch (JSONException e) {
 					Log.i("FriendsActivity", e.getMessage());
 				}

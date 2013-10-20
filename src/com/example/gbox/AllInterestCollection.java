@@ -135,4 +135,10 @@ public class AllInterestCollection {
         return interestCollections.get(index).getSuggestionForCategory();
     }
     
+    public String[] getSuggestions(){
+        String[] suggests = new String[10];
+        for(int i=0; i<10; i++) suggests[i] = getSuggestion();
+        return suggests;
+    }
+    
 }
