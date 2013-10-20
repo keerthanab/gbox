@@ -34,7 +34,6 @@ import com.facebook.Settings;
 import com.facebook.widget.LoginButton;
 
 public class MainActivity extends Activity {
-    private static final String URL_PREFIX_FRIENDS = "https://graph.facebook.com/me/friends?access_token=";
 
     private TextView textInstructionsOrLink;
     private LoginButton buttonLoginLogout;
@@ -47,6 +46,7 @@ public class MainActivity extends Activity {
         buttonLoginLogout = (LoginButton)findViewById(R.id.authButton);
         buttonLoginLogout.setReadPermissions(Arrays.asList("user_likes", "friends_likes"));
         textInstructionsOrLink = (TextView)findViewById(R.id.instructionsOrLink);
+        
 
         Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
 
@@ -95,12 +95,15 @@ public class MainActivity extends Activity {
     private void updateView() {
         Session session = Session.getActiveSession();
         if (session.isOpened()) {
-            textInstructionsOrLink.setText(URL_PREFIX_FRIENDS + session.getAccessToken());
-            Log.i("MainActivity","");
-            buttonLoginLogout.setText(R.string.logout);
+            //textInstructionsOrLink.setText(URL_PREFIX_FRIENDS + session.getAccessToken());
+            Log.i("MainActivity","Logged in - going to next activity");
+            buttonLoginLogout.setVisibility(View.GONE);
             buttonLoginLogout.setOnClickListener(new OnClickListener() {
                 public void onClick(View view) { onClickLogout(); }
             });
+            Intent intent = new Intent(this, FriendsActivity.class);
+            
+            startActivity(intent);
         } else {
             textInstructionsOrLink.setText(R.string.instructions);
             buttonLoginLogout.setText(R.string.login);
