@@ -40,8 +40,8 @@ public class FriendsActivity extends Activity {
 		if (session.isOpened()) {
 			Log.i("FriendsActivity",
 					URL_PREFIX_FRIENDS + session.getAccessToken());
-			try {
-				getFriends();
+			try { 
+				//getFriends();
 				getFriendsData(Data.movies, "605512675");//pass in a friend's id
 			} catch (JSONException e) {
 				Log.i("FriendsActivity", e.getMessage());
@@ -120,6 +120,12 @@ public class FriendsActivity extends Activity {
 		};
 		HTTPClient.get(str, null, handler);
 	}
+	
+    public void displayListView(View view) 
+    {
+        Intent intent = new Intent(this, ListViewActivity.class);
+        startActivity(intent);
+    }
 
 	public void onClickLogout() {
 		Session session = Session.getActiveSession();

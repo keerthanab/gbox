@@ -149,13 +149,6 @@ public class MainActivity extends Activity {
         }
     }
     
-    public void displayListView(View view) 
-    {
-        Intent intent = new Intent(MainActivity.this, ListViewActivity.class);
-        startActivity(intent);
-    }
-    
-
     
 }
 
