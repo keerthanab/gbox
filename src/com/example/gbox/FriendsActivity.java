@@ -40,12 +40,12 @@ public class FriendsActivity extends Activity {
 		if (session.isOpened()) {
 			Log.i("FriendsActivity",
 					URL_PREFIX_FRIENDS + session.getAccessToken());
-			try { 
-				//getFriends();
-				getFriendsData(Data.movies, "605512675");//pass in a friend's id
-			} catch (JSONException e) {
-				Log.i("FriendsActivity", e.getMessage());
-			}
+//			try { 
+//				//getFriends();
+//				getFriendsData(Data.movies, "605512675");//pass in a friend's id
+//			} catch (JSONException e) {
+//				Log.i("FriendsActivity", e.getMessage());
+//			}
 		}
 
 	}

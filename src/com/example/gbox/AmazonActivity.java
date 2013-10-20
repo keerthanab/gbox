@@ -11,6 +11,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 public class AmazonActivity extends Activity {
 	String[] names = null;
@@ -77,9 +78,13 @@ public class AmazonActivity extends Activity {
 						
 					allLikes.finalizeSearch();
 					String[] query = allLikes.getSuggestions();
+					String textString = "";
 					for (int i = 0; i< query.length; i++) {
 						Log.i("AmazonActivity",query[i]);
+						textString += query[i] + "\n";
 					}
+					TextView text = (TextView)findViewById(R.id.resultText);
+					text.setText(textString);
 					
 				} catch (JSONException e) {
 					Log.i("FriendsActivity", e.getMessage());
