@@ -24,9 +24,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.gbox.R;
 import com.facebook.LoggingBehavior;
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -131,45 +131,14 @@ public class MainActivity extends Activity {
             updateView();
         }
     }
+    
+    public void displayListView(View view) 
+    {
+        Intent intent = new Intent(MainActivity.this, ListViewActivity.class);
+        startActivity(intent);
+    }
+    
+
+    
 }
 
-//package com.example.gbox;
-//
-//import android.os.Bundle;
-//import android.support.v4.app.FragmentActivity;
-//import android.view.Menu;
-//
-//public class MainActivity extends FragmentActivity {
-//	
-//	private MainFragment mainFragment;
-//	
-//	// Your Facebook APP ID
-//    private static String APP_ID = "382206081912591"; // Replace your App ID here
-//
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//        
-//        if (savedInstanceState == null) {
-//            // Add the fragment on initial activity setup
-//            mainFragment = new MainFragment();
-//            getSupportFragmentManager()
-//            .beginTransaction()
-//            .add(android.R.id.content, mainFragment)
-//            .commit();
-//        } else {
-//            // Or set the fragment from restored state info
-//            mainFragment = (MainFragment) getSupportFragmentManager()
-//            .findFragmentById(android.R.id.content);
-//        }
-//    }
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.activity_main, menu);
-//        return true;
-//    }
-//    
-//   
-//}
