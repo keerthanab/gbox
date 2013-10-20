@@ -4,7 +4,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="2"
+        android:minSdkVersion="9"
         android:targetSdkVersion="16" />
 
     <uses-permission android:name="android.permission.INTERNET" >
@@ -41,6 +41,11 @@
         <activity
       	android:name=".ListViewActivity"
       	android:label="Choose a friend">          
+ </activity>
+ 
+           <activity
+      	android:name=".ProductFinderActivity"
+      	android:label="Choose a product">          
  </activity>
         
     </application>

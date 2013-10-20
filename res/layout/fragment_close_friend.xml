@@ -6,8 +6,9 @@
 
     <ListView
         android:id="@+id/close_friend_listview"
+        android:scrollbars="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="200dip"
+        android:layout_height="wrap_content"
         android:layout_gravity="fill_vertical" >
     </ListView>
 

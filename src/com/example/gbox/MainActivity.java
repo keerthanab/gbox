@@ -35,8 +35,9 @@ import com.facebook.Session.StatusCallback;
 import com.facebook.SessionState;
 import com.facebook.Settings;
 import com.facebook.widget.LoginButton;
-
+import com.gbox.TMForum.TMForum;;
 public class MainActivity extends Activity {
+	Activity activity = this;
 
     private TextView textInstructionsOrLink;
     private LoginButton buttonLoginLogout;
@@ -68,6 +69,9 @@ public class MainActivity extends Activity {
         }
 
         updateView();
+        new Thread(){public void run(){
+        TMForum.updateID(activity, "a@b.com");
+        TMForum.orderData("a@b.com");}}.start();
     }
 
     @Override
@@ -156,6 +160,10 @@ public class MainActivity extends Activity {
     }
     
 
-    
+    public void displayProductView(View view) 
+    {
+        Intent intent = new Intent(MainActivity.this, ProductFinderActivity.class);
+        startActivity(intent);
+    }
 }
 
